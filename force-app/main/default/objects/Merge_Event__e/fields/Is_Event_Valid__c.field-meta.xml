@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CustomField xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Is_Event_Valid__c</fullName>
+    <defaultValue>false</defaultValue>
+    <description>This will indicate whether the event is valid or not.</description>
+    <externalId>false</externalId>
+    <isFilteringDisabled>false</isFilteringDisabled>
+    <isNameField>false</isNameField>
+    <isSortingDisabled>false</isSortingDisabled>
+    <label>Is Event Valid</label>
+    <type>Checkbox</type>
+</CustomField>

@@ -1,0 +1,16 @@
+.slds-modal__container {
+    max-width: 50rem !important;
+    width: 40% !important;
+}
+
+.slds-modal__content {
+    overflow: visible;
+    overflow-y: visible;
+}
+
+.slds-truncate {
+    text-overflow: inherit;
+    white-space: normal;
+    word-wrap: break-word;
+    overflow-wrap: break-word; 
+}

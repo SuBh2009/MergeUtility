@@ -1,0 +1,51 @@
+<template>
+    
+    <!-- Modal will open on click of this modal -->
+    <lightning-button name="Configure Merge Concern"  label="*Configure Merge Concern" 
+                                            onclick={openModal}  variant="Base"     
+                                            class="slds-m-around_small slds-float_right" > </lightning-button>
+    <!-- This Modal will only be visible if showModal is set to true -->
+    <template if:true={showModal}>
+        <section aria-modal="true" class="slds-modal slds-fade-in-open">
+            <div class="slds-modal__container ">
+                <header class="slds-modal__header">
+                    <h2 class="slds-text-heading_small">New Merge Concern</h2>
+                    <button class="slds-button slds-button_icon slds-modal__close slds-button_icon-inverse" title="Close" onclick={closeModal}>
+                        <lightning-icon icon-name="utility:close"
+                            alternative-text="close"
+                            variant="inverse"
+                            size="small" ></lightning-icon>
+                        <span class="slds-assistive-text">Close</span>
+                    </button>
+                </header>
+                <div class="slds-modal__content">
+                    <lightning-card>
+                        <div class="slds-m-around_medium">
+                            <template if:true={objectPicklist.data}>
+                                <lightning-combobox name="objectName" label="Object:" value={sObjectName}
+                                    options={objectPicklist.data.values} onchange={fetchRelatedFields}>
+                                </lightning-combobox>
+                            </template>
+
+                            <c-multi-select-picklist 
+                                if:true={sObjectFieldsList} 
+                                options={sObjectFieldsList}
+                                onvaluechange={handleChange} 
+                                label="Field:">
+                            </c-multi-select-picklist>
+
+                            <br>
+                            <lightning-input type="toggle" label="Is Force Overwrite: " name="isForceOverwrite"> 
+                            </lightning-input>
+                        </div>
+                    </lightning-card>
+                </div>
+                <footer class="slds-modal__footer">
+                    <lightning-button variant="brand" label="Save"   disabled={disabledSaveBtn} onclick={handleSave} class="slds-p-around_x-small"></lightning-button>
+                    <lightning-button variant="Neutral" label="Cancel" onclick={closeModal} class="slds-p-around_x-small"></lightning-button>
+                </footer>
+            </div>
+        </section>
+        <div class="slds-backdrop slds-backdrop_open"></div>
+    </template>
+</template>

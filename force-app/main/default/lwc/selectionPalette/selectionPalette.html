@@ -1,0 +1,48 @@
+<template>
+    <div style="height: 300px;">
+        <!-- <lightning-datatable class="wrapped-header-datatable"
+            columns={lstDataTableColumns} 
+            data={victimData} 
+            hide-checkbox-column="true" 
+            key-field="id"
+            min-column-width="100"
+            onrowaction={handleRowAction}>
+        </lightning-datatable> -->
+        
+        <template if:false={hideTT}>
+            <!-- TABLE DATA -->
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                <thead>
+                    <tr class="slds-line-height_reset">
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Key">Column Headers</div>
+                        </th>
+                        <th class="" scope="col">
+                            <div class="slds-truncate" title="Master">Master</div>
+                        </th>
+                        <template for:each={victimData} for:item="colval" for:index="index2">
+                            <th class="" scope="col" key={colval}>
+                                <div class="slds-truncate" title="Duplicate">Duplicate</div>
+                            </th>
+                        </template>
+                    </tr>
+                </thead>
+                <tbody>
+                    <template for:each={mapkeyvaluestore} for:item="mapkey" for:index="index">
+                        <tr key={mapkey.key}>
+                            <td scope="col">
+                                {mapkey.key}
+                            </td>
+                            <template for:each={mapkey.value} for:item="mapval" for:index="index1">
+                                <td scope="col" key={mapval}>
+                                    <input type="radio" name={mapkey.key} value={mapval.radioLabel} style="margin-right: 5px;" onchange={handleRadioClick} checked={mapval.selected}/>
+                                    {mapval.radioLabel}
+                                </td>
+                            </template>
+                        </tr> 
+                    </template>
+                </tbody>
+            </table>
+        </template>
+    </div>
+</template>
