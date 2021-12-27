@@ -39,9 +39,9 @@ public class MergerBatch implements Database.Batchable<sObject>,Database.Statefu
         Id masterId = victimMasterRecordMap.get(victimRecId).Id;
         //sObject masterRecord = []
         String sobjectType = victimRecId.getSObjectType().getDescribe().getName();
-        String sObjectQuery = 'Select Id, '+String.join((Iterable<String>)fieldsList, ', ') +' from '+sobjectType+' where Id =: masterId LIMIT 1' ;
-        sObject masterRecord = Database.query(sObjectQuery);
-        
+        //String sObjectQuery = 'Select Id, '+String.join((Iterable<String>)fieldsList, ', ') +' from '+sobjectType+' where Id =: masterId LIMIT 1' ;
+        sObject masterRecord = /*Database.query(sObjectQuery)*/ recordDataMap.get(masterId);  
+        system.debug('---masterRecord---'+masterRecord);
         Database.MergeResult res = MergeService.getInstance(sobjectType).mergeOne(masterRecord, recordDataMap.get(victimRecId));
         if (!res.isSuccess())
         {

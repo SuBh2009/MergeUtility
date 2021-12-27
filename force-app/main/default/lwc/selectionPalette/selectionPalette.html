@@ -10,7 +10,13 @@
         </lightning-datatable> -->
         
         <template if:false={hideTT}>
-            <!-- TABLE DATA -->
+            <div class="slds-align_absolute-center">
+                <b><h1 class="slds-text-heading_medium">Compare {sObjectName}s</h1></b>
+            </div>
+            <div class="slds-align_absolute-center">
+                When you merge, the master record is updated with the values you choose.
+            </div>
+            <br/>
             <table class="slds-table slds-table_cell-buffer slds-table_bordered">
                 <thead>
                     <tr class="slds-line-height_reset">

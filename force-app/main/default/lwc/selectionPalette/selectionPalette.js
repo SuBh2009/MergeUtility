@@ -8,6 +8,9 @@ export default class SelectionPalette extends LightningElement {
     @track _victimData;
     @track _masterData;
     @api masterRowId;
+    @api sObjectName;
+    @track recordToUpdate; 
+    @api recordSelectedValues;
     @api
     get masterData(){
         return this._masterData;
@@ -21,7 +24,6 @@ export default class SelectionPalette extends LightningElement {
     }
     set victimData(value){
         this._victimData = value;
-        // console.log('_victimData>>'+JSON.stringify(this._victimData));
     }
     @api
     get lstDataTableColumns(){
@@ -29,47 +31,92 @@ export default class SelectionPalette extends LightningElement {
     }
     set lstDataTableColumns(value){
         this._lstDataTableColumns = value;
+        console.log('recordSelectedValues>>'+JSON.stringify(this.recordSelectedValues));
         this._lstDataTableColumns.forEach(element => {
-            // console.log('fld>>'+element.label+'>>'+element.fieldName);
             let fldLbl = element.label;
             let fldApi = element.fieldName;
+            console.log(fldLbl+'=='+fldApi);
+            console.log('this.recordSelectedValues[fldApi]=='+this.recordSelectedValues[fldApi]);
             this.masterData.forEach(ele => {
                 if(ele.Id === this.masterRowId){
+                    console.log('mstr[fldApi]=='+ele[fldApi]);                    
                     let newLst;
-                    if(ele[fldApi]){
-                        newLst= [{radioLabel:ele[fldApi], selected:true}];
-                    } else{
+                    let selection = false;
+                    /*if(ele[fldApi]){
+                        selection = (this.recordSelectedValues[fldApi] === ele[fldApi]) ? true: false;
+                        newLst= [{radioLabel:ele[fldApi], selected:selection}];
+                    }else {
                         newLst = [{radioLabel:"", selected:true}];
+                    }*/
+                    if(this.recordSelectedValues[fldApi] === null) {
+                        if(ele[fldApi]){
+                            newLst= [{radioLabel:ele[fldApi], selected:true}];
+                        } else {
+                            newLst= [{radioLabel:"", selected:true}];
+                        }
+                    } else if(ele[fldApi]){
+                        selection = (this.recordSelectedValues[fldApi] === ele[fldApi]) ? true: false;
+                        newLst= [{radioLabel:ele[fldApi], selected:selection}];
+                    }else if(!this.recsLstMap[fldLbl]){    // for 1st column selection on 1st click
+                        newLst = [{radioLabel:"", selected:true}];
+                    }else {
+                        newLst = [{radioLabel:"", selected:false}];
                     }
                     this.recsLstMap[fldLbl] = newLst;
                 }
             });
             this.victimData.forEach(ele => {
+                console.log('vctm[fldApi]=='+ele[fldApi]);
                 if(this.recsLstMap.hasOwnProperty(fldLbl)){
-                    if(ele[fldApi]){
-                        this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:false});
+                    let selection = false;
+                    /*if(ele[fldApi]){
+                        selection = (this.recordSelectedValues[fldApi] === ele[fldApi]) ? true: false;
+                        this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:selection});
                     } else{
                         this.recsLstMap[fldLbl].push({radioLabel:"", selected:false});
-                    }                    
+                    } */    
+                    if(this.recordSelectedValues[fldApi] === null) {
+                        if(ele[fldApi]){
+                            this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:true});
+                        } else {
+                            this.recsLstMap[fldLbl].push({radioLabel:"", selected:true});
+                        }
+                    } else if(ele[fldApi]){
+                        selection = (this.recordSelectedValues[fldApi] === ele[fldApi]) ? true: false;
+                        this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:selection});
+                    }else {
+                        this.recsLstMap[fldLbl].push({radioLabel:"", selected:false});
+                    }               
                 } 
             });
         });
         
-        console.log('final>>'+JSON.stringify(this.recsLstMap));
-        // console.log('masterRowId>>'+this.masterRowId);
         this.hideTT = (Object.keys(this.recsLstMap).length === 0);
-        // console.log('this.hideTT?'+this.hideTT);
         
         if(this.recsLstMap){
             let dataMap = this.recsLstMap;
             for(var key in dataMap){
                 this.mapkeyvaluestore.push({key:key,value:dataMap[key]});
             }
-            console.log('mapkeyvaluestore>>'+JSON.stringify(this.mapkeyvaluestore));
+            // console.log('mapkeyvaluestore>>'+JSON.stringify(this.mapkeyvaluestore));
         }
     } 
     
     handleRadioClick(event){
-        console.log('name>>'+event.target.name+' val>>'+event.target.value);
+        //if(!this.recordToUpdate){
+            this.recordToUpdate = {Id:this.masterRowId};
+        //}
+        this.lstDataTableColumns.forEach(element => {
+            let fldLbl = element.label;
+            let fldApi = element.fieldName;
+            if(event.target.name === fldLbl) {
+                this.recordToUpdate['updatedValue']=event.target.value ? event.target.value: null; 
+                this.recordToUpdate['fieldApiName']=fldApi;
+            }           
+        });
+        console.log('recordToUpdate>>'+JSON.stringify(this.recordToUpdate));
+        const selectedEvent = new CustomEvent('selected', { detail: this.recordToUpdate});
+        // Dispatches the event.
+        this.dispatchEvent(selectedEvent);
     }
 }

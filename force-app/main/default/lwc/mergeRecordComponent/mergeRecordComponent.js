@@ -27,6 +27,8 @@ const columns = [
 export default class MergeSobjectRecord extends LightningElement {
    
     @track masterRowId;
+    @track dataToRetain;
+    @track disableSave = true;
     @api recordId;
     error;
     @api isLoaded = false;
@@ -42,6 +44,8 @@ export default class MergeSobjectRecord extends LightningElement {
     response;
     disableMergeButton = true;
     mergedCSVMap= [];
+    recordDataMap;
+    recordSelectedValues;
     // accepted parameters
     get acceptedFormats() {
         return ['.csv'];
@@ -106,7 +110,8 @@ export default class MergeSobjectRecord extends LightningElement {
     handleUploadFinished(event) {
         // Get the list of uploaded files
         const uploadedFiles = event.detail.files;
-
+        this.loadingMessage = "Records are fetching!!";
+        this.isLoaded = true;
         // calling apex class
         readCSV({contentDocumentId : uploadedFiles[0].documentId,
                  sobjectName : this.sObjectName})
@@ -117,7 +122,9 @@ export default class MergeSobjectRecord extends LightningElement {
             this.columns = columns;
             this.lstDataTableColumns = this.response.lstDataTableColumns;
             this.disableMergeButton = Object.keys(this.response.victimMasterRecordMap).length > 0 ? false : true;
-            
+            let masterRecordMap = this.response.recordDataMap;
+            this.recordDataMap = masterRecordMap;
+            this.isLoaded = false;
             this.dispatchEvent(
                 new ShowToastEvent({
                     title: 'Success!!',
@@ -141,15 +148,17 @@ export default class MergeSobjectRecord extends LightningElement {
 
     handleRowAction(event){
         const dataRow = event.detail.row;
+        this.masterRowId = dataRow.Id;
+        this.recordSelectedValues= this.response.recordDataMap[this.masterRowId];
         this.victimData= this.victimDataMap[dataRow.Id];
         this.hasVictimData  = this.victimData.length > 0 ? true : false;
         this.modalContainer=true;
-        this.masterRowId = dataRow.Id;
      }
    
-     closeModalAction(){
-      this.modalContainer=false;
-     }
+    closeModalAction(){
+        this.modalContainer=false;
+        // console.log('close recordDataMap>>'+JSON.stringify(this.response.recordDataMap));
+    }
 
      handleMergeRecord(event) {
         this.disableMergeButton = true;
@@ -220,5 +229,14 @@ export default class MergeSobjectRecord extends LightningElement {
 
     dowmloadSampleCSV(){
         exportCSVFile(this.sampleDataheaders, this.sampleData, "Merge Duplicate Records")
+    }
+
+    saveModalAction(event){
+        // console.log('event.detail>>'+JSON.stringify(event.detail));
+        // console.log('this.response.recordDataMap>>'+JSON.stringify(this.response.recordDataMap));
+        console.log('update now::::');
+        this.response.recordDataMap[event.detail.recId] = event.detail.recData;
+        console.log('aftr update recordDataMap>>'+JSON.stringify(this.response.recordDataMap[event.detail.recId]));
+        this.modalContainer=false;
     }
 }
