@@ -26,14 +26,14 @@ const columns = [
 
 export default class MergeSobjectRecord extends LightningElement {
    
-    @track masterRowId;
-    @track dataToRetain;
-    @track disableSave = true;
-    @api recordId;
+    masterRowId;
+    dataToRetain;
+    disableSave = true;
     error;
-    @api isLoaded = false;
+    isLoaded = false;
     sObjectName;
     displayFileUpload = false;
+    hasMasterData = false;
     loadingMessage;
     columns = [];
     masterData=[];
@@ -116,22 +116,29 @@ export default class MergeSobjectRecord extends LightningElement {
         readCSV({contentDocumentId : uploadedFiles[0].documentId,
                  sobjectName : this.sObjectName})
         .then(result => {
-            this.response = JSON.parse(result);
-            this.masterData = this.response.surviorDataList;
-            this.victimDataMap = this.response.victimRecordMap;
-            this.columns = columns;
-            this.lstDataTableColumns = this.response.lstDataTableColumns;
-            this.disableMergeButton = Object.keys(this.response.victimMasterRecordMap).length > 0 ? false : true;
-            let masterRecordMap = this.response.recordDataMap;
-            this.recordDataMap = masterRecordMap;
             this.isLoaded = false;
-            this.dispatchEvent(
-                new ShowToastEvent({
-                    title: 'Success!!',
-                    message: 'Accounts are fetched based CSV file!!!',
-                    variant: 'success',
-                }),
-            );
+            this.response = JSON.parse(result);
+            if(this.response.surviorDataList.length > 0)
+            {
+                this.hasMasterData = true;
+                this.masterData = this.response.surviorDataList;
+                this.victimDataMap = this.response.victimRecordMap;
+                this.columns = columns;
+                this.lstDataTableColumns = this.response.lstDataTableColumns;
+                this.disableMergeButton = Object.keys(this.response.victimMasterRecordMap).length > 0 ? false : true;
+                let masterRecordMap = this.response.recordDataMap;
+                this.recordDataMap = masterRecordMap;
+
+            } else
+            {
+                this.dispatchEvent(
+                    new ShowToastEvent({
+                        title: 'Error!!',
+                        message: 'No Record exist for selected Object.',
+                        variant: 'error',
+                    }),
+                );
+            }
         })
         .catch(error => {
             this.error = error;
