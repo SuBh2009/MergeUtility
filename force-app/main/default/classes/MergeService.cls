@@ -56,11 +56,8 @@ global with sharing class MergeService {
      * @param masterRecord
      * @param mergedRecord
      */
-    public Database.MergeResult mergeOne(Sobject masterRecord, Sobject mergedRecord) {
-        for (Merge_Concern__c eachConcern : this.concerns) {
-			system.debug('---masterRecord----'+masterRecord);
-            system.debug('---mergedRecord----'+mergedRecord);
-             system.debug('---eachConcern.Field_Name__c----'+eachConcern.Field_API_Name__c);
+    public Database.MergeResult mergeOne(Sobject masterRecord, Sobject duplicateRecord) {
+       /* for (Merge_Concern__c eachConcern : this.concerns) {
             // If a field is enumerated in the custom metadata, this implies
             // that the value from the merged record is of some value.
             // The default behavior is to overwrite-if-blank, unless the
@@ -82,8 +79,8 @@ global with sharing class MergeService {
             masterRecord,
             mergedRecord
         });
-		system.debug('---mergeParameters----'+mergeParameters[0]);
-        return Database.merge(mergeParameters[0], mergeParameters[1], false);
+		system.debug('---mergeParameters----'+mergeParameters[0]);*/
+        return Database.merge(masterRecord, duplicateRecord, false);
     }
 
     /**
@@ -153,26 +150,6 @@ global with sharing class MergeService {
     }
     
     
-     public void mergeMany(sObject masterRecord, List<Sobject> recordLists) {
-        for (Sobject mergedRecord : recordLists) {
-            masterRecord = this.mergesobjectRecords(masterRecord, mergedRecord);
-        }
-        Database.merge(masterRecord, recordLists);
-    }
-    
-    private Sobject mergesobjectRecords(Sobject masterRecord, Sobject mergedRecord) {
-        for (Merge_Concern__c eachConcern : this.concerns)
-        {
-            if (eachConcern.Is_Force_Overwrite__c) 
-            {
-                // Keep the value from the merged record
-                masterRecord.put(eachConcern.Field_Name__c,
-                                 mergedRecord.get(eachConcern.Field_Name__c));
-            }
-        }
-        
-        return masterRecord;
-    }
 
     /**
      * @param sobjectName
