@@ -65,27 +65,28 @@
                                 {error}
                             </div><br/>
 
-                    
-                            <div if:true={masterData} style="height: 300px;">
-                                <lightning-datatable class="datatable-full-size"
-                                                    columns={columns} 
-                                                    data={masterData} 
-                                                    hide-checkbox-column="true" 
-                                                    key-field="id"
-                                                    onrowaction={handleRowAction}></lightning-datatable>
-                                            
-                            </div>
-                            <lightning-layout >
-                                <lightning-layout-item size="12" class="">
-                                    <footer class="slds-modal__footer">
-                                        <lightning-button label="Merge" 
-                                        size="small" 
-                                        variant="brand" 
-                                        onclick={handleMergeRecord}
-                                        disabled={disableMergeButton}></lightning-button>
-                                    </footer>
-                                </lightning-layout-item>
-                            </lightning-layout>
+                            <template if:true={hasMasterData}>
+                                <div style="height: 300px;">
+                                    <lightning-datatable class="datatable-full-size"
+                                                        columns={columns} 
+                                                        data={masterData} 
+                                                        hide-checkbox-column="true" 
+                                                        key-field="id"
+                                                        onrowaction={handleRowAction}></lightning-datatable>
+                                                
+                                </div>
+                                <lightning-layout >
+                                    <lightning-layout-item size="12" class="">
+                                        <footer class="slds-modal__footer">
+                                            <lightning-button label="Merge" 
+                                            size="small" 
+                                            variant="brand" 
+                                            onclick={handleMergeRecord}
+                                            disabled={disableMergeButton}></lightning-button>
+                                        </footer>
+                                    </lightning-layout-item>
+                                </lightning-layout>
+                            </template>
                         </div>
                     </div>    
                 </div>

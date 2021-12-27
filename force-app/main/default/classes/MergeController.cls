@@ -55,14 +55,18 @@ public class MergeController
         Map<Id, sObject> victimMasterRecordMap = new Map<Id, sObject>();
         for(String masterId : masterIdMap.keySet())
         {
-            masterDataList.add(recordDataMap.get(masterId));
-            victimRecordMap.put(masterId, new List<sObject>());
-            for(Id victimId : masterIdMap.get(masterId))
+            if(recordDataMap.containsKey(masterId))
             {
-                if(recordDataMap.containskey(victimId))
+              
+                masterDataList.add(recordDataMap.get(masterId));
+                victimRecordMap.put(masterId, new List<sObject>());
+                for(Id victimId : masterIdMap.get(masterId))
                 {
-                    victimRecordMap.get(masterId).add(recordDataMap.get(victimId));
-                    victimMasterRecordMap.put(victimId, recordDataMap.get(masterId));
+                    if(recordDataMap.containskey(victimId))
+                    {
+                        victimRecordMap.get(masterId).add(recordDataMap.get(victimId));
+                        victimMasterRecordMap.put(victimId, recordDataMap.get(masterId));
+                    }
                 }
             }
         }
