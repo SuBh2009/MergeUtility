@@ -1,14 +1,5 @@
 <template>
-    <div style="height: 300px;">
-        <!-- <lightning-datatable class="wrapped-header-datatable"
-            columns={lstDataTableColumns} 
-            data={victimData} 
-            hide-checkbox-column="true" 
-            key-field="id"
-            min-column-width="100"
-            onrowaction={handleRowAction}>
-        </lightning-datatable> -->
-        
+    <div style="height: 300px;">        
         <template if:false={hideTT}>
             <div class="slds-align_absolute-center">
                 <b><h1 class="slds-text-heading_medium">Compare {sObjectName}s</h1></b>
@@ -17,8 +8,8 @@
                 When you merge, the master record is updated with the values you choose.
             </div>
             <br/>
-            <table class="slds-table slds-table_cell-buffer slds-table_bordered">
-                <thead>
+            <table class="slds-table slds-table_cell-buffer slds-table_bordered forceListViewManagerPrimaryDisplayManager">
+                <!-- <thead>
                     <tr class="slds-line-height_reset">
                         <th class="" scope="col">
                             <div class="slds-truncate" title="Key">Column Headers</div>
@@ -32,16 +23,29 @@
                             </th>
                         </template>
                     </tr>
-                </thead>
+                </thead> -->
                 <tbody>
+                    <tr>
+                        <td class="" scope="col">
+                            <div class="slds-truncate" title="Key"><b>Column Headers</b></div>
+                        </td>
+                        <td class="tdPadding" scope="col">
+                            <div class="slds-truncate" title="Master"><b>Master</b></div>
+                        </td>
+                        <template for:each={victimData} for:item="colval" for:index="index2">
+                            <td class="tdPadding" scope="col" key={colval}>
+                                <div class="slds-truncate" title="Duplicate"><b>Duplicate</b></div>
+                            </td>
+                        </template>
+                    </tr>
                     <template for:each={mapkeyvaluestore} for:item="mapkey" for:index="index">
                         <tr key={mapkey.key}>
                             <td scope="col">
                                 {mapkey.key}
                             </td>
                             <template for:each={mapkey.value} for:item="mapval" for:index="index1">
-                                <td scope="col" key={mapval}>
-                                    <input type="radio" name={mapkey.key} value={mapval.radioLabel} style="margin-right: 5px;" onchange={handleRadioClick} checked={mapval.selected}/>
+                                <td class="tdPadding" scope="col" key={mapval} data-id={mapval.radioLabel}>
+                                    <input type="radio" name={mapkey.key} value={mapval.radioLabel} style="margin-right: 5px;" onchange={handleRadioClick} checked={mapval.selected} data-target-id={index}/>
                                     {mapval.radioLabel}
                                 </td>
                             </template>

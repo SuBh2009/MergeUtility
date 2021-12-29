@@ -1,8 +1,9 @@
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 
 export default class SelectionPaletteModal extends LightningElement {
 
-    @api hasVictimData;
+    @track _hasVictimData;
+    @track modalBlock;
     @api masterRowId;
     _response;
     _recordDataMap;
@@ -14,6 +15,18 @@ export default class SelectionPaletteModal extends LightningElement {
     updatedMasterRecord;
     @api recordSelectedValues;
     @api sObjectName;
+    @api
+    get hasVictimData(){
+        return this._hasVictimData;
+    }
+    set hasVictimData(value){
+        this._hasVictimData = value;
+        if(this._hasVictimData){
+            this.modalBlock = "slds-modal--large slds-modal slds-fade-in-open";
+        } else {
+            this.modalBlock = "slds-modal--medium slds-modal slds-fade-in-open";
+        }
+    }
     @api
     get response(){
         return this._response;

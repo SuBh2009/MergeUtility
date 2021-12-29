@@ -97,6 +97,10 @@ export default class SelectionPalette extends LightningElement {
     } 
     
     handleRadioClick(event){
+        let currentVal = event.target.value;
+        this.template.querySelector('[data-id="'+currentVal+'"]').className='selectedCol';
+        // this.template.querySelector('[data-id="'+currentVal+'"]').classList.add("selectedCol");
+        console.log('td>>'+event.target.dataset.targetId);
         this.recordToUpdate = {Id:this.masterRowId};
         this.lstDataTableColumns.forEach(element => {
             let fldLbl = element.label;

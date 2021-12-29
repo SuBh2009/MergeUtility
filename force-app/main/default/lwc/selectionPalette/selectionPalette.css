@@ -1,0 +1,6 @@
+.selectedCol {
+    background-color: var(--lwc-colorBackground,rgb(243, 242, 242));
+}
+.tdPadding {
+    padding-left: var(--lwc-spacingLarge,1.5rem);
+}
