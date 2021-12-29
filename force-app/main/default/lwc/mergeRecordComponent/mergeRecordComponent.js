@@ -164,7 +164,6 @@ export default class MergeSobjectRecord extends LightningElement {
    
     closeModalAction(){
         this.modalContainer=false;
-        // console.log('close recordDataMap>>'+JSON.stringify(this.response.recordDataMap));
     }
 
      handleMergeRecord(event) {
@@ -239,11 +238,7 @@ export default class MergeSobjectRecord extends LightningElement {
     }
 
     saveModalAction(event){
-        // console.log('event.detail>>'+JSON.stringify(event.detail));
-        // console.log('this.response.recordDataMap>>'+JSON.stringify(this.response.recordDataMap));
-        console.log('update now::::');
         this.response.recordDataMap[event.detail.recId] = event.detail.recData;
-        console.log('aftr update recordDataMap>>'+JSON.stringify(this.response.recordDataMap[event.detail.recId]));
         this.modalContainer=false;
     }
 }

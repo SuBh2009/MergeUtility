@@ -31,15 +31,11 @@ export default class SelectionPalette extends LightningElement {
     }
     set lstDataTableColumns(value){
         this._lstDataTableColumns = value;
-        console.log('recordSelectedValues>>'+JSON.stringify(this.recordSelectedValues));
         this._lstDataTableColumns.forEach(element => {
             let fldLbl = element.label;
             let fldApi = element.fieldName;
-            console.log(fldLbl+'=='+fldApi);
-            console.log('this.recordSelectedValues[fldApi]=='+this.recordSelectedValues[fldApi]);
             this.masterData.forEach(ele => {
                 if(ele.Id === this.masterRowId){
-                    console.log('mstr[fldApi]=='+ele[fldApi]);                    
                     let newLst;
                     let selection = false;
                     /*if(ele[fldApi]){
@@ -66,7 +62,6 @@ export default class SelectionPalette extends LightningElement {
                 }
             });
             this.victimData.forEach(ele => {
-                console.log('vctm[fldApi]=='+ele[fldApi]);
                 if(this.recsLstMap.hasOwnProperty(fldLbl)){
                     let selection = false;
                     /*if(ele[fldApi]){
@@ -98,14 +93,15 @@ export default class SelectionPalette extends LightningElement {
             for(var key in dataMap){
                 this.mapkeyvaluestore.push({key:key,value:dataMap[key]});
             }
-            // console.log('mapkeyvaluestore>>'+JSON.stringify(this.mapkeyvaluestore));
         }
     } 
     
     handleRadioClick(event){
-        //if(!this.recordToUpdate){
-            this.recordToUpdate = {Id:this.masterRowId};
-        //}
+        let currentVal = event.target.value;
+        this.template.querySelector('[data-id="'+currentVal+'"]').className='selectedCol';
+        // this.template.querySelector('[data-id="'+currentVal+'"]').classList.add("selectedCol");
+        console.log('td>>'+event.target.dataset.targetId);
+        this.recordToUpdate = {Id:this.masterRowId};
         this.lstDataTableColumns.forEach(element => {
             let fldLbl = element.label;
             let fldApi = element.fieldName;
@@ -114,7 +110,6 @@ export default class SelectionPalette extends LightningElement {
                 this.recordToUpdate['fieldApiName']=fldApi;
             }           
         });
-        console.log('recordToUpdate>>'+JSON.stringify(this.recordToUpdate));
         const selectedEvent = new CustomEvent('selected', { detail: this.recordToUpdate});
         // Dispatches the event.
         this.dispatchEvent(selectedEvent);
