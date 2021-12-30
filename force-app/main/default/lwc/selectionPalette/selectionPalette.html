@@ -9,21 +9,6 @@
             </div>
             <br/>
             <table class="slds-table slds-table_cell-buffer slds-table_bordered forceListViewManagerPrimaryDisplayManager">
-                <!-- <thead>
-                    <tr class="slds-line-height_reset">
-                        <th class="" scope="col">
-                            <div class="slds-truncate" title="Key">Column Headers</div>
-                        </th>
-                        <th class="" scope="col">
-                            <div class="slds-truncate" title="Master">Master</div>
-                        </th>
-                        <template for:each={victimData} for:item="colval" for:index="index2">
-                            <th class="" scope="col" key={colval}>
-                                <div class="slds-truncate" title="Duplicate">Duplicate</div>
-                            </th>
-                        </template>
-                    </tr>
-                </thead> -->
                 <tbody>
                     <tr>
                         <td class="" scope="col">
@@ -44,8 +29,8 @@
                                 {mapkey.key}
                             </td>
                             <template for:each={mapkey.value} for:item="mapval" for:index="index1">
-                                <td class="tdPadding" scope="col" key={mapval} data-id={mapval.radioLabel}>
-                                    <input type="radio" name={mapkey.key} value={mapval.radioLabel} style="margin-right: 5px;" onchange={handleRadioClick} checked={mapval.selected} data-target-id={index}/>
+                                <td class={mapval.cls} scope="col" key={mapval} data-id={mapval.radioLabel}>
+                                    <input type="radio" name={mapkey.key} value={mapval.radioLabel} style="margin-right: 5px;" onchange={handleRadioClick} checked={mapval.selected} data-target-key={mapval.fldApi}/>
                                     {mapval.radioLabel}
                                 </td>
                             </template>
