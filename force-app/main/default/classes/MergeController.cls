@@ -82,9 +82,11 @@ public class MergeController
     {
         Map<String,String> objNameMap = getObjectName();
         String sObjectApiName = objNameMap.get(sobjectName);
-        String sObjectQuery = 'Select Id,Name ';
+        String sObjectQuery = 'Select ';
+        sObjectFields.add('Id');
+        sObjectFields.add('Name');
         if(!sObjectFields.isEmpty())
-            sObjectQuery =sObjectQuery + ', '+(String.join((Iterable<String>)sObjectFields, ', '));
+            sObjectQuery =sObjectQuery +(String.join((Iterable<String>)sObjectFields, ', '));
                                   
         sObjectQuery = sObjectQuery + ' from '+ sObjectApiName+' where Id in: recordIds';                          
         return new Map<String, sObject>((sObject[]) Database.query(sObjectQuery));
@@ -125,7 +127,7 @@ public class MergeController
         List<SobjectFields> sObjectDetailsList = new List<SobjectFields>();
         for(Schema.SobjectField field : mfields.values()){
             Schema.DescribeFieldResult dfr = field.getDescribe();
-            if(dfr.isUpdateable())
+            if(dfr.isUpdateable() && dfr.getName() != 'Name')
             {
                 if(!sObjectFieldsListMap.containsKey(sobjectName))
                 {
@@ -188,7 +190,7 @@ public class MergeController
                 } else
                 {
                     mergeConObj = new  Merge_Concern__c(Name = sObjectName+': '+fieldApiName,
-														Is_Force_Overwrite__c = mergeConcernWrpObj.isForceOverwrite,
+														//Is_Force_Overwrite__c = mergeConcernWrpObj.isForceOverwrite,
                                                         Field_API_Name__c = fieldApiName,
                                                         Object_Name__c = sObjectName,
                                                         Field_Name__c =getFieldLabelName(sObjectName, fieldApiName));

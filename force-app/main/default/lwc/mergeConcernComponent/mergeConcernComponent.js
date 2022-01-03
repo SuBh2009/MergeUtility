@@ -70,12 +70,12 @@ export default class CustomModal extends LightningElement {
             });
         }
         savedData['fieldApiList'] = JSON.parse(JSON.stringify(this.selectedValues));
-        const chkBoxFields = this.template.querySelectorAll('lightning-input');
+        /*const chkBoxFields = this.template.querySelectorAll('lightning-input');
         if (chkBoxFields) {
             chkBoxFields.forEach(field => {
                 savedData[field.name] = field.checked;
             });
-        }
+        }*/
         console.log('--savedDatasavedData--', savedData);
         handleMergeConRecord({mergeConcernRecord : JSON.stringify(savedData)})
         .then(result => {

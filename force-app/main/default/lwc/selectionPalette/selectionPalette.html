@@ -1,5 +1,5 @@
 <template>
-    <div style="height: 300px;">        
+    <div class="tableCSS">        
         <template if:false={hideTT}>
             <div class="slds-align_absolute-center">
                 <b><h1 class="slds-text-heading_medium">Compare {sObjectName}s</h1></b>
@@ -29,7 +29,7 @@
                                 {mapkey.key}
                             </td>
                             <template for:each={mapkey.value} for:item="mapval" for:index="index1">
-                                <td class={mapval.cls} scope="col" key={mapval} data-id={mapval.radioLabel}>
+                                <td class="tdPadding" scope="col" key={mapval} data-id={mapval.radioLabel}>
                                     <input type="radio" name={mapkey.key} value={mapval.radioLabel} style="margin-right: 5px;" onchange={handleRadioClick} checked={mapval.selected} data-target-key={mapval.fldApi}/>
                                     {mapval.radioLabel}
                                 </td>

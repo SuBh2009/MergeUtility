@@ -1,11 +1,6 @@
-.selectedCol {
-    background-color: var(--lwc-colorBackground,rgb(243, 242, 242));
-    padding-left: var(--lwc-spacingLarge,1.5rem);
-}
-.unselectedCol {
-    background-color: white;
-    padding-left: var(--lwc-spacingLarge,1.5rem);
-}
 .tdPadding {
     padding-left: var(--lwc-spacingLarge,1.5rem);
+}
+.tableCSS {
+   height: var(--modalHeight, 15rem);
 }
