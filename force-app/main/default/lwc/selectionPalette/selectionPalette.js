@@ -42,7 +42,7 @@ export default class SelectionPalette extends LightningElement {
                     let selection = false;
                     if(this.recordSelectedValues[fldApi] === null) {
                         if(ele[fldApi]){
-                            newLst= [{radioLabel:ele[fldApi], selected:true, fldApi:fldApi}];
+                            newLst= [{radioLabel:ele[fldApi], selected:false, fldApi:fldApi}];
                         } else {
                             newLst= [{radioLabel:"", selected:true, fldApi:fldApi}];
                         }
@@ -62,14 +62,14 @@ export default class SelectionPalette extends LightningElement {
                     let selection = false;   
                     if(this.recordSelectedValues[fldApi] === null) {
                         if(ele[fldApi]){
-                            this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:true, fldApi:fldApi});
+                            this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:false, fldApi:fldApi});
                         } else {
                             this.recsLstMap[fldLbl].push({radioLabel:"", selected:true, fldApi:fldApi});
                         }
                     } else if(ele[fldApi]){
                         selection = (this.recordSelectedValues[fldApi] === ele[fldApi]) ? true: false;
                         this.recsLstMap[fldLbl].push({radioLabel:ele[fldApi], selected:selection, fldApi:fldApi});
-                    }else {
+                    } else {
                         this.recsLstMap[fldLbl].push({radioLabel:"", selected:false, fldApi:fldApi});
                     }               
                 } 
